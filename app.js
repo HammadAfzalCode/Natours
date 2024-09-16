@@ -4,13 +4,24 @@ const express = require('express');
 
 const app = express();
 app.use(express.json()); // middleware to grab data from req body otherwise it will be undefined
+app.use((req, res, next) => {
+    console.log('hello from middleware')
+    next()
+})
+app.use((req, res, next) => {
+    req.requestTime = new Date().toISOString()
+
+    next()
+})
 const port = 3000;
 
 const tours = JSON.parse(fs.readFileSync(`./dev-data/data/tours-simple.json`));
 const getAllTours = (req, res) => {
+    console.log(req.requestTime)
     // here the cb is route Hanlder
     res.status(200).json({
         status: 'success',
+        requestedAt: req.requestTime,
         data: {
             results: tours.length,
             tours,
