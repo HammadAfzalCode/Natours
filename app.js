@@ -9,13 +9,30 @@ const port = 3000;
 const tours = JSON.parse(fs.readFileSync(`./dev-data/data/tours-simple.json`));
 
 app.get('/api/v1/tours', (req, res) => {
-
     // here the cb is route Hanlder
     res.status(200).json({
         status: 'success',
         data: {
             results: tours.length,
             tours,
+        },
+    });
+});
+app.get('/api/v1/tours/:id', (req, res) => {
+    console.log(req.params);
+    const id = req.params.id * 1;
+
+    const tour = tours.find((el) => el.id === id);
+    if (!tour) {
+        return res.status(404).json({
+            status: 'fail',
+            message: 'Invalid Id',
+        });
+    }
+    res.status(200).json({
+        status: 'success',
+        data: {
+            tour,
         },
     });
 });
@@ -42,25 +59,23 @@ app.post('/api/v1/tours', (req, res) => {
         }
     );
 });
-app.get('/api/v1/tours/:id', (req, res) => {
-    console.log(req.params)
-    const id = req.params.id * 1
+app.patch('/api/v1/tours/:id', (req, res) => {
+    const id = req.params.id * 1;
 
-    const tour = tours.find(el => el.id === id)
-    if (!tour) {
+    if (id > tours.length) {
         return res.status(404).json({
             status: 'fail',
-            message: "Invalid Id"
-        })
+            message: 'Invalid Id',
+        });
     }
     res.status(200).json({
         status: 'success',
         data: {
-            tour,
+            tour: '<updated tour here ....>',
         },
     });
-
 });
+
 app.listen(port, () => {
     console.log(`App is listening of port: ${port}`);
 });
