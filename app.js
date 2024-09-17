@@ -134,21 +134,17 @@ const deleteUser = (req, res) => {
         message: 'This route is not yet defined',
     });
 };
+const tourRouter = express.Router();
+const userRouter = express.Router();
 
+app.use('/api/v1/tours', tourRouter); // Mounting the router
+app.use('/api/v1/users', userRouter);
 
-app.route('/api/v1/tours').get(getAllTours).post(createTour);
-app
-    .route('/api/v1/tours/:id')
-    .get(getTour)
-    .patch(updateTour)
-    .delete(deleteTour);
-app.route('/api/v1/users').get(getAllUsers).post(createUser);
+tourRouter.route('/').get(getAllTours).post(createTour);
+tourRouter.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
+userRouter.route('/').get(getAllUsers).post(createUser);
 
-app
-    .route('/api/v1/users/:id')
-    .get(getUser)
-    .patch(updateUser)
-    .delete(deleteUser);
+userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 app.listen(port, () => {
     console.log(`App is listening of port: ${port}`);
 });
