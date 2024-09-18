@@ -6,7 +6,7 @@ const { getAllTours, createTour, getTour, updateTour, deleteTour } =
 // in param middleware we got the fourth argument values of the param in question
 router.param('id', tourController.checkID);
 
-router.route('/').get(getAllTours).post(createTour);
+router.route('/').get(getAllTours).post(tourController.checkBody, createTour);
 router.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
 
 module.exports = router;
