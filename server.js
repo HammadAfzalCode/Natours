@@ -1,9 +1,17 @@
 const dotenv = require("dotenv")
+const mongoose = require("mongoose")
 dotenv.config({
     path: "./config.env"
 })
 const app = require("./app");
-console.log(process.env.NODE_ENV)
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+}).then(con => {
+
+    console.log("DB connection successful")
+})
 
 
 const port = process.env.PORT || 4000;
